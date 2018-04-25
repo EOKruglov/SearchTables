@@ -86,6 +86,167 @@ public:
 			arr[i] = recArr[i];
 	}
 
+	TRecord<TKey, TValue>*& operator=(const TRecord<TKey, TValue>& *recArr) {
+		if (size != recArr.size)
+		{
+			delete[] arr;
+			size = recArr.size;
+			arr = new TRecord<TKey, TValue>[size];
+		}
+
+		for (int i = 0; i < size; i++)
+			arr[i] = recArr[i];
+		return *this;
+	}
+
+	TRecord<TKey, TValue> GetCurrent()
+	{
+		return arr[currNum];
+	}
+
+	 void Reset() {
+		currNum = 0;
+	}
+
+	void GoNext() {
+		currNum++;
+	}
+
+	void IsEnd() {
+		return DataCount;
+	}
+	
+
+};
 
 
+template <class TKey, class TValue>
+class TScanTable :public TArrayTable<TKey, TValue>
+{
+	bool Find(TKey k)
+	{
+		for (int i = 0; i < DataCount; i++)
+		{
+			eff++;
+			if (arr[i].key == k)
+			{
+				currNum = i;
+				return true;
+			}
+		}
+		currNum = DataCount;
+		return false;
+	}
+
+	bool Insert(TRecord<TKey, TValue> tr)
+	{
+		if (!Find(tr.key))
+		{
+			arr[currNum] = tr;
+			DataCount++;
+			return true;
+		}
+		return false;
+	}
+
+	void Delete(TKey k)
+	{
+		if (Find(k))
+		{
+			arr[currNum] = arr[DataCount - 1];
+			DataCount--;
+		}
+	}
+};
+
+
+
+
+template <class TKey, class TValue>
+class TSortTable :public TArrayTable<TKey, TValue>
+{
+	bool Find(TKey k)
+	{
+		int left = 0, right = DataCount - 1, middle;
+		while (left <= right)
+		{
+			middle = (left + right) / 2;
+			eff++;
+			if (arr[middle].key == k)
+			{
+				currNum = middle;
+				return true;
+			}
+
+			if (arr[middle].key < k)
+				left = middle + 1;
+			else
+				right = middle - 1;
+		}
+
+		currNum = left;
+		return false;
+	}
+
+
+	bool Insert(TRecord<TKey, TValue> tr)
+	{
+		if (!Find(tr.key))
+		{
+			for (int i = DataCount; i > currNum; i--)
+			{
+				arr[i] = arr[i - 1];
+				eff++;
+			}
+			DataCount++;
+			arr[currNum] = tr;
+			return true;
+		}
+		return false;
+	}
+
+	void Delete(TKey k)
+	{
+		if (Find(k))
+		{
+			for (int i = currNum; i < DataCount; i++)
+			{
+				arr[i] = arr[i + 1];
+				eff++;
+			}
+			DataCount--;
+		}
+	}
+
+
+	void QuickSort(int left, int right)
+	{
+		int middle = (left + right) / 2;
+		TKey mKey = arr[middle].key;
+		int i = left, j = right;
+
+		while (i <= j)
+		{
+			while (arr[i].key < mKey)
+			{
+				i++;
+				eff++;
+			}
+
+			while (arr[j].key > mKey)
+			{
+				j--;
+				eff++;
+			}
+
+			if (i <= j)
+				swap(arr[i], arr[j]);
+			eff++;
+		}
+
+		if (j > left)
+			QuickSort(left, j);
+		if (i < right)
+			QuickSort(i, right);
+	}
 };
