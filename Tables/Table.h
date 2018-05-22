@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stack>
 
 
 using namespace std;
@@ -248,5 +249,234 @@ class TSortTable :public TArrayTable<TKey, TValue>
 			QuickSort(left, j);
 		if (i < right)
 			QuickSort(i, right);
+	}
+};
+
+template<class TKey, class TValue>
+class THashTable : public TTable<TKey, TValue>
+{
+protected:
+	int HashFunc(TKey k)
+	{
+		int pos = 0;
+		for (int i = 0; i < k.length(); i++)
+			pos += k[i] << i;
+		return pos;
+	}
+};
+
+template<class TKey, class TValue>
+class TArrayHash :public THashTanle<TKey, TValue>
+{
+protected:
+	int size, step;
+	TRecord<TKey, TValue> *arr;
+
+public:
+	TArrayHash(int _size = 100)
+	{
+		size = _size;
+		arr = new TRecord<TKey, TValue>[size];
+		step = 13;
+		for (int i = 0; i < size; i++)
+			arr[i].key = " ";
+	}
+
+	TArrayHash()
+	{
+		delete[] arr;
+	}
+
+	bool Find(TKey k)
+	{
+		currNum = HashFunc(k) % size;
+		int freepos = -1;
+		for (int i = 0; i < size; i++)
+		{
+			eff++;
+			if (arr[currNum].key == " ")
+				if (freepos == -1)
+					return false;
+				else
+				{
+					currNum = freepos;
+					return freepos;
+				}
+			if (arr[currNum].key == k)
+				return true;
+			if (freepos == -1 && arr[currNum].key == '&')
+				freepos = currNum;
+			currNum += step;
+			currNum %= size;
+		}
+		return false;
+	}
+
+	void Delete(TKey k)
+	{
+		if (Find(k))
+		{
+			DataCount--;
+			arr[currNum].key = "&";
+		}
+	}
+
+	void Reset()
+	{
+		currNum = 0;
+		while ((arr[currNum].key == " " || arr[currNum].key == "&") && (currNum < size))
+			currNum++;
+	}
+
+	bool isEnd() 
+	{
+		return currNum >= size;
+	}
+
+	void GoNext()
+	{
+		while ((++currNum < size)) {
+			if (((arr[currNum].key != "&") && (arr[currNum].key != " ")))
+				break;
+		}
+	}
+
+	bool Insert(TRecord < TKey, TValue> record) {
+		if (!Find(record.key)) 
+		{
+			arr[currNum] = record;
+			dataCount++;
+			return true;
+		}
+		return false;
+	}
+};
+
+template <class TKey, class TValue>
+struct TNode
+{
+	int bal;
+	TRecord<TKey, TValue> rec;
+	TNode *pLeft, *pRight;
+};
+
+
+template<class TKey, class TValue>
+class TTreeTable :public TTable<TKey, TValue>
+{
+protected:
+	TNode *pRoot;
+	TNode *pCurr;
+	stack<TNode*> st;
+	TNode **pRes;
+	int pos;
+public:
+	TTreeTable()
+	{
+		pRoot = nullptr;
+		pCurr = nullptr;
+		pRes = nullptr;
+	}
+
+	bool Find(TKey k)
+	{
+		pRes = &pRoot;
+		while (*pRes != nullptr)
+		{
+			eff++;
+			if ((*pRes)->rec.key == k)
+				return true;
+			if ((*pRes)->rec.key < k)
+				pRes = &(*pRes->pRight);
+			else
+				pRes = &(*pRes->pLeft);
+		}
+		return false;
+	}
+
+	bool Insert(TRecord<TKey, TValue> r)
+	{
+		if (!Find(r.key))
+		{
+			TNode *tmp = new TNode<TKey, TValue>;
+			tmp->rec = r;
+			tmp->pLeft = nullptr;
+			tmp->pRight = nullptr;
+			pRes = &tmp;
+			DataCount++;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	void Delete(TKey k)
+	{
+		if (Find(k))
+		{
+			TNode *tmp = *pRes;
+			if (tmp->pLeft == nullptr)
+				*pRes = tmp->pRight;
+			else
+				if (tmp->pRight == nullptr)
+					*pRes = tmp->pLeft;
+				else
+				{
+					TNode *p = tmp->pLeft;
+					TNode **pPrev = &tmp->pLeft;
+					while (p->pRight != nullptr)
+					{
+						eff++;
+						pPrev = &(p->pRight);
+						p = p->pRight;
+					}
+					tmp->rec = p->rec;
+					tmp = p;
+					*pPrev = p->pLeft;
+				}
+			delete tmp;
+			DataCount--;
+		}
+	}
+
+	void Reset()
+	{
+		pos = 0;
+		while (!st.empty())
+			st.pop();
+		pCurr = pRoot;
+		while (pCurr->pLeft != nullptr)
+		{
+			st.push(pCurr);
+			pCurr = pCurr->pLeft;
+		}
+		st.push(pCurr);
+	}
+
+	void GoNext()
+	{
+		st.pop();
+		pos++;
+		if (pCurr->pRight != nullptr)
+		{
+			pCurr = pCurr->pRight;
+			while (pCurr->pLeft != nullptr)
+			{
+				st.push(pCurr);
+				pCurr = pCurr->pLeft;
+			}
+			st.push(pCurr);
+		}
+		else
+			if (!st.empty())
+			{
+				pCurr = st.top();
+				//st.pop();
+			}
+	}
+
+	bool IsEnd()
+	{
+		return(pos == DataCount);
 	}
 };
