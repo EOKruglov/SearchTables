@@ -113,17 +113,27 @@ public:
 		currNum++;
 	}
 
-	void IsEnd() {
+	bool IsEnd() {
 		return DataCount;
 	}
-	
 
+	bool IsFull()
+	{
+		return size == DataCount;
+	}
+
+	void SetCurrentValue(TValue val)
+	{
+		arr[currNum].value = val;
+	}
+	
 };
 
 
 template <class TKey, class TValue>
 class TScanTable :public TArrayTable<TKey, TValue>
 {
+public:
 	bool Find(TKey k)
 	{
 		for (int i = 0; i < DataCount; i++)
@@ -158,6 +168,9 @@ class TScanTable :public TArrayTable<TKey, TValue>
 			DataCount--;
 		}
 	}
+
+
+
 };
 
 

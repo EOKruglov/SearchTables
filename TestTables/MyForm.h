@@ -8,7 +8,8 @@
 using namespace std;
 
 char arr[100];
-TRecord<string, int> r;
+
+
 
 namespace TestTables {
 
@@ -25,14 +26,15 @@ namespace TestTables {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 		FILE *f;
-		
-		
+		TScanTable<string, int> *scanTable;
+		TRecord<string, int> *r;
 	public:
 		MyForm(void)
 		{
 			 
 			InitializeComponent();
-			
+			scanTable = new TScanTable<string, int>;
+			r = new TRecord<string, int>;
 			//
 			//TODO: Add the constructor code here
 			//
@@ -50,6 +52,7 @@ namespace TestTables {
 			}
 		}
 	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::DataGridView^  dataGridView1;
 	protected:
 
 	private:
@@ -66,6 +69,8 @@ namespace TestTables {
 		void InitializeComponent(void)
 		{
 			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -78,14 +83,25 @@ namespace TestTables {
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
+			// dataGridView1
+			// 
+			this->dataGridView1->AllowUserToAddRows = false;
+			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+			this->dataGridView1->Location = System::Drawing::Point(41, 118);
+			this->dataGridView1->Name = L"dataGridView1";
+			this->dataGridView1->Size = System::Drawing::Size(199, 400);
+			this->dataGridView1->TabIndex = 1;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1046, 608);
+			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->button1);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
@@ -102,8 +118,10 @@ namespace TestTables {
 				tmp += arr[index];
 				index++;
 			}
-			r.key = tmp;
-			r.value = 1;
+			r->key = tmp;
+			r->value = 1;
+			scanTable->Insert(r);
+			index++;
 		}
 	}
 	};
