@@ -61,6 +61,11 @@ public:
 	{
 		return eff;
 	}
+
+	void ClrEff()
+	{
+		eff = 0;
+	}
 };
 
 
@@ -77,6 +82,7 @@ public:
 	TArrayTable(int _size = 10) {
 		size = _size;
 		arr = new TRecord<TKey, TValue>[size];
+		currNum = 0;
 	}
 
 	~TArrayTable() {
@@ -119,7 +125,7 @@ public:
 	}
 
 	bool IsEnd() {
-		return DataCount;
+		return currNum == DataCount;
 	}
 
 	bool IsFull()
@@ -310,9 +316,10 @@ public:
 		step = 13;
 		for (int i = 0; i < size; i++)
 			arr[i].key = " ";
+		currNum = 0;
 	}
 
-	TArrayHash()
+	~TArrayHash()
 	{
 		delete[] arr;
 	}
@@ -406,9 +413,10 @@ public:
 template <class TKey, class TValue>
 struct TNode
 {
+public:
 	int bal;
 	TRecord<TKey, TValue> rec;
-	TNode<TKey, TValue> *pLeft, *pRight;
+	TNode *pLeft, *pRight;
 };
 
 
@@ -424,15 +432,17 @@ protected:
 public:
 	TTreeTable()
 	{
-		pRoot = nullptr;
+		/*pRoot = nullptr;
 		pCurr = nullptr;
-		pRes = nullptr;
+		pRes = nullptr;*/
+
+		pRoot = pCurr = NULL;
 	}
 
 	bool Find(TKey k)
 	{
 		pRes = &pRoot;
-		while (*pRes != nullptr)
+		while (*pRes != NULL)
 		{
 			eff++;
 			if ((*pRes)->rec.key == k)
@@ -451,8 +461,8 @@ public:
 		{
 			TNode<TKey, TValue> *tmp = new TNode<TKey, TValue>;
 			tmp->rec = r;
-			tmp->pLeft = nullptr;
-			tmp->pRight = nullptr;
+			tmp->pLeft = NULL;
+			tmp->pRight = NULL;
 			pRes = &tmp;
 			DataCount++;
 			return true;
@@ -466,16 +476,16 @@ public:
 		if (Find(k))
 		{
 			TNode<TKey, TValue> *tmp = *pRes;
-			if (tmp->pLeft == nullptr)
+			if (tmp->pLeft == NULL)
 				*pRes = tmp->pRight;
 			else
-				if (tmp->pRight == nullptr)
+				if (tmp->pRight == NULL)
 					*pRes = tmp->pLeft;
 				else
 				{
 					TNode<TKey, TValue> *p = tmp->pLeft;
 					TNode<TKey, TValue> **pPrev = &tmp->pLeft;
-					while (p->pRight != nullptr)
+					while (p->pRight != NULL)
 					{
 						eff++;
 						pPrev = &(p->pRight);
@@ -496,7 +506,7 @@ public:
 		while (!st.empty())
 			st.pop();
 		pCurr = pRoot;
-		while (pCurr->pLeft != nullptr)
+		while (pCurr->pLeft != NULL)
 		{
 			st.push(pCurr);
 			pCurr = pCurr->pLeft;
