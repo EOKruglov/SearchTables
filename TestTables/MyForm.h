@@ -349,6 +349,7 @@ namespace TestTables {
 
 		if (radioButton1->Checked)
 		{
+			int row = 0;
 			while (!ifs.eof())
 			{
 				ifs >> arr;
@@ -360,7 +361,11 @@ namespace TestTables {
 				if (scanTable->Find(tmp.key))
 					scanTable->SetCurrentValue(scanTable->GetCurrent().value + 1);
 				else
+				{
+					tmp.numRow = row;
 					scanTable->Insert(tmp);
+					row++;
+				}
 			}
 
 			ClrScr();
@@ -380,6 +385,7 @@ namespace TestTables {
 
 		if (radioButton2->Checked)
 		{
+			int row = 0;
 			while (!ifs.eof())
 			{
 				ifs >> arr;
@@ -390,7 +396,9 @@ namespace TestTables {
 				if (sortTable->Find(tmp.key))
 					sortTable->SetCurrentValue(sortTable->GetCurrent().value + 1);
 				else
+				{
 					sortTable->Insert(tmp);
+				}
 			}
 
 			ClrScr();
@@ -421,7 +429,9 @@ namespace TestTables {
 				if (hashTable->Find(tmp.key))
 					hashTable->SetCurrentValue(hashTable->GetCurrent().value + 1);
 				else
+				{
 					hashTable->Insert(tmp);
+				}
 			}
 
 			ClrScr();
@@ -433,6 +443,8 @@ namespace TestTables {
 				tmp = hashTable->GetCurrent();
 				dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(StrToStr(tmp.key));
 				dataGridView1->Rows[i]->Cells[1]->Value = tmp.value;
+				hashTable->SetRowNum(i);
+
 				i++;
 			}
 
@@ -441,6 +453,7 @@ namespace TestTables {
 
 		if (radioButton4->Checked)
 		{
+			int row = 0;
 			while (!ifs.eof())
 			{
 				ifs >> arr;
@@ -449,9 +462,14 @@ namespace TestTables {
 				tmp.value = 1;
 				tmp.key = str;
 				if (treeTable->Find(tmp.key))
-					treeTable->SetCurrentValue(treeTable->GetCurrent().value + 1);
+				{
+					//treeTable->SetCurrentValue(treeTable->GetCurrent().value + 1);
+					treeTable->SetRes(treeTable->GetResRecord().value + 1);
+				}
 				else
+				{
 					treeTable->Insert(tmp);
+				}
 			}
 
 			ClrScr();
@@ -461,8 +479,11 @@ namespace TestTables {
 			for (treeTable->Reset(); !treeTable->IsEnd(); treeTable->GoNext())
 			{
 				tmp = treeTable->GetCurrent();
+				//tmp = treeTable->GetRes();
 				dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(StrToStr(tmp.key));
 				dataGridView1->Rows[i]->Cells[1]->Value = tmp.value;
+				
+
 				i++;
 			}
 
@@ -480,7 +501,10 @@ namespace TestTables {
 			scanTable->ClrEff();
 
 			if (scanTable->Find(tmp))
+			{
 				label5->Text = Convert::ToString(scanTable->GetEff());
+				dataGridView1->Rows[(scanTable->GetCurrent()).numRow]->Selected = true;
+			}
 			else
 				label5->Text = "NONE";
 		}
@@ -495,7 +519,10 @@ namespace TestTables {
 			sortTable->ClrEff();
 
 			if (sortTable->Find(tmp))
+			{
 				label5->Text = Convert::ToString(sortTable->GetEff());
+				dataGridView1->Rows[sortTable->GetCurrNum()]->Selected = true;
+			}
 			else
 				label5->Text = "NONE";
 		}
@@ -510,7 +537,10 @@ namespace TestTables {
 			hashTable->ClrEff();
 
 			if (hashTable->Find(tmp))
+			{
 				label5->Text = Convert::ToString(hashTable->GetEff());
+				dataGridView1->Rows[(hashTable->GetCurrent()).numRow]->Selected = true;
+			}
 			else
 				label5->Text = "NONE";
 		}
@@ -525,7 +555,10 @@ namespace TestTables {
 			treeTable->ClrEff();
 			
 			if (treeTable->Find(tmp))
+			{
 				label5->Text = Convert::ToString(treeTable->GetEff());
+				dataGridView1->Rows[(treeTable->GetCurrent()).numRow]->Selected = true;
+			}
 			else
 				label5->Text = "NONE";
 		}
@@ -545,6 +578,7 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 
 	if (radioButton1->Checked)
 	{
+		int row = scanTable->GetDataCount();
 		scanTable->ClrEff();
 		if (scanTable->Find(tmp.key))
 		{
@@ -552,6 +586,7 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 		}
 		else
 		{
+			tmp.numRow = row;
 			scanTable->Insert(tmp);
 		}
 
@@ -574,12 +609,14 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 	if (radioButton2->Checked)
 	{
 		sortTable->ClrEff();
+		int row = sortTable->GetDataCount();
 		if (sortTable->Find(tmp.key))
 		{
 			sortTable->SetCurrentValue(sortTable->GetCurrent().value + 1);
 		}
 		else
 		{
+			tmp.numRow = row;
 			sortTable->Insert(tmp);
 		}
 		ClrScr();
@@ -599,12 +636,14 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 	if (radioButton3->Checked)
 	{
 		hashTable->ClrEff();
+		int row = hashTable->GetDataCount();
 		if (hashTable->Find(tmp.key))
 		{
 			hashTable->SetCurrentValue(hashTable->GetCurrent().value + 1);
 		}
 		else
 		{
+			tmp.numRow = row;
 			hashTable->Insert(tmp);
 		}
 
@@ -625,12 +664,14 @@ private: System::Void button3_Click(System::Object^  sender, System::EventArgs^ 
 	if (radioButton4->Checked)
 	{
 		treeTable->ClrEff();
+		int row = treeTable->GetDataCount();
 		if (treeTable->Find(tmp.key))
 		{
 			treeTable->SetCurrentValue(treeTable->GetCurrent().value + 1);
 		}
 		else
 		{
+			tmp.numRow = row;
 			treeTable->Insert(tmp);
 		}
 

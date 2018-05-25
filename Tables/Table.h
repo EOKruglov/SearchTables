@@ -11,6 +11,7 @@ template <class TKey, class TValue>
 struct TRecord {
 	TKey key;
 	TValue value;
+	int numRow = 0;
 };
 
 
@@ -66,6 +67,13 @@ public:
 	{
 		eff = 0;
 	}
+
+	int GetDataCount()
+	{
+		return DataCount;
+	}
+
+
 };
 
 
@@ -136,6 +144,11 @@ public:
 	void SetCurrentValue(TValue val)
 	{
 		arr[currNum].value = val;
+	}
+
+	int GetCurrNum()
+	{
+		return currNum;
 	}
 	
 };
@@ -324,6 +337,11 @@ public:
 		delete[] arr;
 	}
 
+	int GetCurrNum()
+	{
+		return currNum;
+	}
+
 	bool Find(TKey k)
 	{
 		currNum = HashFunc(k) % size;
@@ -408,22 +426,34 @@ public:
 		arr[currNum].value = val;
 	}
 
+	void SetRowNum(int row)
+	{
+		arr[currNum].numRow = row;
+	}
+
 };
 
 template <class TKey, class TValue>
 struct TNode
 {
-public:
 	int bal;
 	TRecord<TKey, TValue> rec;
-	TNode *pLeft, *pRight;
+	TNode<TKey, TValue> *pLeft, *pRight;
+
+	TNode(TRecord<TKey, TValue> _record, 
+		TNode<TKey, TValue> *_pLeft = nullptr, 
+		TNode<TKey, TValue> *_pRight = nullptr) 
+	{
+		rec = _record;
+		pLeft = _pLeft;
+		pRight = _pRight;
+	}
 };
 
 
 template<class TKey, class TValue>
 class TTreeTable :public TTable<TKey, TValue>
 {
-protected:
 	TNode<TKey, TValue> *pRoot;
 	TNode<TKey, TValue> *pCurr;
 	stack<TNode<TKey, TValue>*> st;
@@ -432,25 +462,28 @@ protected:
 public:
 	TTreeTable()
 	{
-		/*pRoot = nullptr;
+		pRoot = nullptr;
 		pCurr = nullptr;
-		pRes = nullptr;*/
-
-		pRoot = pCurr = NULL;
+		pRes = nullptr;
 	}
 
 	bool Find(TKey k)
 	{
 		pRes = &pRoot;
-		while (*pRes != NULL)
+		while (*pRes != nullptr)
 		{
 			eff++;
 			if ((*pRes)->rec.key == k)
+			{
 				return true;
-			if ((*pRes)->rec.key < k)
-				pRes = &((*pRes) -> pRight);
+			}
 			else
-				pRes = &((*pRes)->pLeft);
+			{
+				if ((*pRes)->rec.key < k)
+					pRes = &((*pRes)->pRight);
+				else
+					pRes = &((*pRes)->pLeft);
+			}
 		}
 		return false;
 	}
@@ -459,11 +492,12 @@ public:
 	{
 		if (!Find(r.key))
 		{
-			TNode<TKey, TValue> *tmp = new TNode<TKey, TValue>;
+		/*	TNode<TKey, TValue> *tmp = new TNode<TKey, TValue>;
 			tmp->rec = r;
 			tmp->pLeft = NULL;
 			tmp->pRight = NULL;
-			pRes = &tmp;
+			pRes = &tmp;*/
+			*pRes = new TNode<TKey, TValue>(r);
 			DataCount++;
 			return true;
 		}
@@ -506,17 +540,21 @@ public:
 		while (!st.empty())
 			st.pop();
 		pCurr = pRoot;
-		while (pCurr->pLeft != NULL)
+		if (pCurr != nullptr)
 		{
-			st.push(pCurr);
-			pCurr = pCurr->pLeft;
+			while (pCurr->pLeft != NULL)
+			{
+				st.push(pCurr);
+				pCurr = pCurr->pLeft;
+			}
 		}
 		st.push(pCurr);
 	}
 
 	void GoNext()
 	{
-		st.pop();
+		if(!st.empty())
+			st.pop();
 		pos++;
 		if (pCurr->pRight != nullptr)
 		{
@@ -555,4 +593,16 @@ public:
 	{
 		return pCurr->rec;
 	}
+
+	TRecord<TKey, TValue> GetResRecord()
+	{
+		return (*pRes)->rec;
+	}
+
+	void SetRes(TValue val)
+	{
+		(*pRes)->rec.value = val;
+	}
+
+
 };

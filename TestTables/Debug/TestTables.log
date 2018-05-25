@@ -1,27 +1,27 @@
 ﻿  MyForm.cpp
-d:\vstudio\git\searchtables\testtables\MyForm.h(478): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\MyForm.h(493): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\MyForm.h(508): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\MyForm.h(523): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\MyForm.h(541): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\MyForm.h(655): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
-d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(340): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
-  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(328): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
-  d:\vstudio\git\searchtables\testtables\MyForm.h(421): note: см. ссылку на создание экземпляров функции шаблон при компиляции "bool TArrayHash<std::string,int>::Find(TKey)"
+d:\vstudio\git\searchtables\testtables\MyForm.h(499): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(517): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(535): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(553): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(574): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(696): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(358): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(346): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
+  d:\vstudio\git\searchtables\testtables\MyForm.h(429): note: см. ссылку на создание экземпляров функции шаблон при компиляции "bool TArrayHash<std::string,int>::Find(TKey)"
           with
           [
               TKey=std::string
           ]
   d:\vstudio\git\searchtables\testtables\MyForm.h(57): note: см. ссылку на создание экземпляров класса шаблон при компиляции "TArrayHash<std::string,int>"
-d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(298): warning C4018: <: несоответствие типов со знаком и без знака
-  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(296): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
-  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(329): note: см. ссылку на создание экземпляров функции шаблон при компиляции "int THashTable<TKey,TValue>::HashFunc(TKey)"
+d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(311): warning C4018: <: несоответствие типов со знаком и без знака
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(309): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(347): note: см. ссылку на создание экземпляров функции шаблон при компиляции "int THashTable<TKey,TValue>::HashFunc(TKey)"
           with
           [
               TKey=std::string,
               TValue=int
           ]
-  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(306): note: см. ссылку на создание экземпляров класса шаблон при компиляции "THashTable<TKey,TValue>"
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(319): note: см. ссылку на создание экземпляров класса шаблон при компиляции "THashTable<TKey,TValue>"
           with
           [
               TKey=std::string,
