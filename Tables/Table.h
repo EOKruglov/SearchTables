@@ -56,6 +56,11 @@ public:
 			cout << tmp.value << endl;
 		}
 	}
+
+	int GetEff()
+	{
+		return eff;
+	}
 };
 
 
@@ -78,7 +83,7 @@ public:
 		delete[] arr;
 	}
 
-	TArrayTable(const TRecord<TKey, TValue>& *recArr)
+	TArrayTable(const TRecord<TKey, TValue>& recArr)
 	{
 		size = recArr.size;
 		currNum = recArr.currNum;
@@ -87,7 +92,7 @@ public:
 			arr[i] = recArr[i];
 	}
 
-	TRecord<TKey, TValue>*& operator=(const TRecord<TKey, TValue>& *recArr) {
+	TRecord<TKey, TValue>*& operator=(const TRecord<TKey, TValue>& recArr) {
 		if (size != recArr.size)
 		{
 			delete[] arr;
@@ -134,6 +139,9 @@ template <class TKey, class TValue>
 class TScanTable :public TArrayTable<TKey, TValue>
 {
 public:
+
+	TScanTable(int _size = 10) : TArrayTable(_size){}
+
 	bool Find(TKey k)
 	{
 		for (int i = 0; i < DataCount; i++)
@@ -179,6 +187,11 @@ public:
 template <class TKey, class TValue>
 class TSortTable :public TArrayTable<TKey, TValue>
 {
+
+public:
+
+	TSortTable(int _size) : TArrayTable(_size){}
+
 	bool Find(TKey k)
 	{
 		int left = 0, right = DataCount - 1, middle;
@@ -201,37 +214,6 @@ class TSortTable :public TArrayTable<TKey, TValue>
 		currNum = left;
 		return false;
 	}
-
-
-	bool Insert(TRecord<TKey, TValue> tr)
-	{
-		if (!Find(tr.key))
-		{
-			for (int i = DataCount; i > currNum; i--)
-			{
-				arr[i] = arr[i - 1];
-				eff++;
-			}
-			DataCount++;
-			arr[currNum] = tr;
-			return true;
-		}
-		return false;
-	}
-
-	void Delete(TKey k)
-	{
-		if (Find(k))
-		{
-			for (int i = currNum; i < DataCount; i++)
-			{
-				arr[i] = arr[i + 1];
-				eff++;
-			}
-			DataCount--;
-		}
-	}
-
 
 	void QuickSort(int left, int right)
 	{
@@ -263,6 +245,41 @@ class TSortTable :public TArrayTable<TKey, TValue>
 		if (i < right)
 			QuickSort(i, right);
 	}
+
+
+
+	bool Insert(TRecord<TKey, TValue> tr)
+	{
+		if (!Find(tr.key))
+		{
+			for (int i = DataCount; i > currNum; i--)
+			{
+				arr[i] = arr[i - 1];
+				eff++;
+			}
+			DataCount++;
+			arr[currNum] = tr;
+			return true;
+			QuickSort(0, DataCount - 1);
+		}
+		return false;
+	}
+
+	void Delete(TKey k)
+	{
+		if (Find(k))
+		{
+			for (int i = currNum; i < DataCount; i++)
+			{
+				arr[i] = arr[i + 1];
+				eff++;
+			}
+			DataCount--;
+		}
+	}
+
+
+
 };
 
 template<class TKey, class TValue>
@@ -279,10 +296,10 @@ protected:
 };
 
 template<class TKey, class TValue>
-class TArrayHash :public THashTanle<TKey, TValue>
+class TArrayHash :public THashTable<TKey, TValue>
 {
 protected:
-	int size, step;
+	int size, step, currNum;
 	TRecord<TKey, TValue> *arr;
 
 public:
@@ -317,7 +334,7 @@ public:
 				}
 			if (arr[currNum].key == k)
 				return true;
-			if (freepos == -1 && arr[currNum].key == '&')
+			if ((freepos == -1) && (arr[currNum].key == "&"))
 				freepos = currNum;
 			currNum += step;
 			currNum %= size;
@@ -358,11 +375,32 @@ public:
 		if (!Find(record.key)) 
 		{
 			arr[currNum] = record;
-			dataCount++;
+			DataCount++;
 			return true;
 		}
 		return false;
 	}
+
+	bool IsFull()
+	{
+		return DataCount == size;
+	}
+
+	bool IsEnd()
+	{
+		return currNum >= size;
+	}
+
+	TRecord<TKey, TValue> GetCurrent()
+	{
+		return arr[currNum];
+	}
+
+	void SetCurrentValue(TValue val)
+	{
+		arr[currNum].value = val;
+	}
+
 };
 
 template <class TKey, class TValue>
@@ -370,7 +408,7 @@ struct TNode
 {
 	int bal;
 	TRecord<TKey, TValue> rec;
-	TNode *pLeft, *pRight;
+	TNode<TKey, TValue> *pLeft, *pRight;
 };
 
 
@@ -378,10 +416,10 @@ template<class TKey, class TValue>
 class TTreeTable :public TTable<TKey, TValue>
 {
 protected:
-	TNode *pRoot;
-	TNode *pCurr;
-	stack<TNode*> st;
-	TNode **pRes;
+	TNode<TKey, TValue> *pRoot;
+	TNode<TKey, TValue> *pCurr;
+	stack<TNode<TKey, TValue>*> st;
+	TNode<TKey, TValue> **pRes;
 	int pos;
 public:
 	TTreeTable()
@@ -400,9 +438,9 @@ public:
 			if ((*pRes)->rec.key == k)
 				return true;
 			if ((*pRes)->rec.key < k)
-				pRes = &(*pRes->pRight);
+				pRes = &((*pRes) -> pRight);
 			else
-				pRes = &(*pRes->pLeft);
+				pRes = &((*pRes)->pLeft);
 		}
 		return false;
 	}
@@ -411,7 +449,7 @@ public:
 	{
 		if (!Find(r.key))
 		{
-			TNode *tmp = new TNode<TKey, TValue>;
+			TNode<TKey, TValue> *tmp = new TNode<TKey, TValue>;
 			tmp->rec = r;
 			tmp->pLeft = nullptr;
 			tmp->pRight = nullptr;
@@ -427,7 +465,7 @@ public:
 	{
 		if (Find(k))
 		{
-			TNode *tmp = *pRes;
+			TNode<TKey, TValue> *tmp = *pRes;
 			if (tmp->pLeft == nullptr)
 				*pRes = tmp->pRight;
 			else
@@ -435,8 +473,8 @@ public:
 					*pRes = tmp->pLeft;
 				else
 				{
-					TNode *p = tmp->pLeft;
-					TNode **pPrev = &tmp->pLeft;
+					TNode<TKey, TValue> *p = tmp->pLeft;
+					TNode<TKey, TValue> **pPrev = &tmp->pLeft;
 					while (p->pRight != nullptr)
 					{
 						eff++;
@@ -491,5 +529,20 @@ public:
 	bool IsEnd()
 	{
 		return(pos == DataCount);
+	}
+
+	bool IsFull()
+	{
+		return false;
+	}
+
+	void SetCurrentValue(TValue val)
+	{
+		pCurr->rec.value = val;
+	}
+
+	TRecord<TKey, TValue> GetCurrent()
+	{
+		return pCurr->rec;
 	}
 };
