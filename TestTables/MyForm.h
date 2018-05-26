@@ -54,7 +54,7 @@ namespace TestTables {
 			count = 100;
 			scanTable = new TScanTable<string, int>(count);
 			sortTable = new TSortTable < string, int>(count);
-			hashTable = new TArrayHash<string, int>(count);
+			hashTable = new TArrayHash<string, int>(4*count);
 			treeTable = new TTreeTable<string, int>();
 			arr = new char[100];
 			efficency = new int[4];
@@ -345,7 +345,7 @@ namespace TestTables {
 	}
 
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		ifstream ifs("D:\\Vstudio\\Git\\SearchTables\\TablesText.txt");
+		ifstream ifs("C:\\Users\\Ёльдорадо\\Documents\\git\\SearchTables\\TablesText.txt");
 
 		if (radioButton1->Checked)
 		{
@@ -482,8 +482,7 @@ namespace TestTables {
 				//tmp = treeTable->GetRes();
 				dataGridView1->Rows[i]->Cells[0]->Value = Convert::ToString(StrToStr(tmp.key));
 				dataGridView1->Rows[i]->Cells[1]->Value = tmp.value;
-				
-
+				//treeTable->SetNumRow1(i);
 				i++;
 			}
 

@@ -73,7 +73,6 @@ public:
 		return DataCount;
 	}
 
-
 };
 
 
@@ -326,7 +325,7 @@ public:
 	{
 		size = _size;
 		arr = new TRecord<TKey, TValue>[size];
-		step = 13;
+		step = 17;
 		for (int i = 0; i < size; i++)
 			arr[i].key = " ";
 		currNum = 0;
@@ -594,6 +593,10 @@ public:
 		return pCurr->rec;
 	}
 
+	void SetNumRow1(int row)
+	{
+		pCurr->rec.numRow = row;
+	}
 	TRecord<TKey, TValue> GetResRecord()
 	{
 		return (*pRes)->rec;
