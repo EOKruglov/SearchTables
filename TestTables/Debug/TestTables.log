@@ -1,2 +1,31 @@
-﻿  TestTables.vcxproj -> C:\Users\Эльдорадо\Documents\git\SearchTables\Tables\Debug\TestTables.exe
-  TestTables.vcxproj -> C:\Users\Эльдорадо\Documents\git\SearchTables\Tables\Debug\TestTables.pdb (Full PDB)
+﻿  MyForm.cpp
+d:\vstudio\git\searchtables\testtables\MyForm.h(498): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(516): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(534): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(552): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(573): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\MyForm.h(695): warning C4244: аргумент: преобразование "wchar_t" в "char", возможна потеря данных
+d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(356): warning C4800: int: принудительно задано логическое значение "true" или "false" (предупреждение о производительности)
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(344): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
+  d:\vstudio\git\searchtables\testtables\MyForm.h(429): note: см. ссылку на создание экземпляров функции шаблон при компиляции "bool TArrayHash<std::string,int>::Find(TKey)"
+          with
+          [
+              TKey=std::string
+          ]
+  d:\vstudio\git\searchtables\testtables\MyForm.h(57): note: см. ссылку на создание экземпляров класса шаблон при компиляции "TArrayHash<std::string,int>"
+d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(309): warning C4018: <: несоответствие типов со знаком и без знака
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(307): note: при компиляции функции-члена "<Нет данных>" класса <Нет данных>
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(345): note: см. ссылку на создание экземпляров функции шаблон при компиляции "int THashTable<TKey,TValue>::HashFunc(TKey)"
+          with
+          [
+              TKey=std::string,
+              TValue=int
+          ]
+  d:\vstudio\git\searchtables\testtables\..//Tables/Table.h(317): note: см. ссылку на создание экземпляров класса шаблон при компиляции "THashTable<TKey,TValue>"
+          with
+          [
+              TKey=std::string,
+              TValue=int
+          ]
+  TestTables.vcxproj -> D:\Vstudio\Git\SearchTables\Tables\Debug\TestTables.exe
+  TestTables.vcxproj -> D:\Vstudio\Git\SearchTables\Tables\Debug\TestTables.pdb (Full PDB)

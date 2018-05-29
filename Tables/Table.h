@@ -278,7 +278,6 @@ public:
 			DataCount++;
 			arr[currNum] = tr;
 			return true;
-			QuickSort(0, DataCount - 1);
 		}
 		return false;
 	}

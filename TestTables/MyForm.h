@@ -345,7 +345,7 @@ namespace TestTables {
 	}
 
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		ifstream ifs("C:\\Users\\Ёльдорадо\\Documents\\git\\SearchTables\\TablesText.txt");
+		ifstream ifs("D:\\Vstudio\\Git\\SearchTables\\TablesText.txt");
 
 		if (radioButton1->Checked)
 		{
